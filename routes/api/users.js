@@ -2,6 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
@@ -82,4 +83,19 @@ router.post('/login', (request, response) => {
     });
   });
 });
+
+// @route   GET api/users/active
+// @desc    a user logs in, if valid, token. returns active user
+// @access  Protected/Private
+router.get(
+  '/active',
+  passport.authenticate('jwt', { session: false }),
+  (request, response) => {
+    response.json({
+      id: request.user.id,
+      name: request.user.name,
+      email: request.user.email
+    });
+  }
+);
 module.exports = router;

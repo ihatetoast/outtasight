@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const passport = require('passport');
 
 const users = require('./routes/api/users');
 const profiles = require('./routes/api/profiles');
@@ -18,11 +19,18 @@ mongoose
   .then(() => console.log('MongoDB connected to OuttaSight'))
   .catch(err => console.log(err));
 
-app.get('/', (request, response) => response.send('OuttaSight.'));
+//PASSPORT
+//init ppp
+app.use(passport.initialize());
+//strategy for jwt in config file, pass in pp
+require('./config/passport')(passport);
 
 //POINT TO ROUTES
+//auth
 app.use('/api/users', users);
+//vols, members, adopters
 app.use('/api/profiles', profiles);
+//communications
 app.use('/api/posts', posts);
 const PORT = process.env.PORT || 7000;
 
