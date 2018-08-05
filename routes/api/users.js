@@ -10,6 +10,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 
+// input and login validation:
+const validateRegisterInput = require('../../validation/register');
+const validateLoginInput = require('../../validation/login');
+
 const User = require('../../models/User');
 // @route   GET api/users/test
 // @desc    Tests users route
@@ -25,9 +29,14 @@ router.get('/test', (request, response) => {
 // @access  Public
 
 router.post('/register', (request, response) => {
+  const { errors, isValid } = validateRegisterInput(request.body);
+  if (!isValid) {
+    return response.status(400).json(errors);
+  }
   User.findOne({ email: request.body.email }).then(user => {
     if (user) {
-      return response.status(400).json({ email: 'User exists' });
+      errors.email = 'User exists.';
+      return response.status(400).json(errors);
     } else {
       //grab gravatar for email. default is silhouette
       const avatar = gravatar.url(request.body.email, {
@@ -59,6 +68,11 @@ router.post('/register', (request, response) => {
 // @desc    users log in. if user exists, jwt gets returned
 // @access  Public
 router.post('/login', (request, response) => {
+  //validation issues
+  const { errors, isValid } = validateLoginInput(request.body);
+  if (!isValid) {
+    return response.status(400).json(errors);
+  }
   //info from login form on client
   const email = request.body.email;
   const password = request.body.password;
@@ -78,7 +92,8 @@ router.post('/login', (request, response) => {
           }
         );
       } else {
-        return response.status(400).json({ password: 'Password invalid' });
+        errors.password = 'Password provided is invalid';
+        return response.status(400).json(errors);
       }
     });
   });

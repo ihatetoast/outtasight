@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "server": "nodemon server.js"
+    "server": "nodemon server.js --exec babel-node"
   },
   "author": "Katy Cassidy",
   "license": "MIT",
@@ -22,6 +22,8 @@
     "validator": "^10.4.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
     "nodemon": "^1.18.3"
   }
 }
