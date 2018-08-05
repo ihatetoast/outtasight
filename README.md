@@ -8,6 +8,7 @@ Toolbox:
 
 - NodeJS
 - ExpressJS
-- MongoDB & Mongoose
+- MongoDB
+- Mongoose
 - PassportJS
 - Validator
