@@ -29,7 +29,7 @@ require('./config/passport')(passport);
 //auth
 app.use('/api/users', users);
 //vols, members, adopters
-app.use('/api/profiles', profiles);
+app.use('/api/profile', profiles);
 //communications
 app.use('/api/posts', posts);
 const PORT = process.env.PORT || 7000;

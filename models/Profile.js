@@ -15,18 +15,8 @@ const ProfileSchema = new Schema({
     max: 40
   },
   groups: {
-    type: [
-      {
-        groupName: {
-          type: String,
-          required: true //required as you have to be invited by a group.
-        },
-        role: {
-          type: String,
-          required: true // dropdown of admin vol adopter foster other
-        }
-      }
-    ]
+    type: [String],
+    required: true
   },
   location: {
     type: String
