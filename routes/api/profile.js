@@ -1,12 +1,15 @@
 //public persona: volunteers, adopters, etc.
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const passport = require('passport');
+
+//get the validator for profiles:
+const validateProfileInput = require('../../validation/profile');
 
 //load models
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
+
 // @route   GET api/profiles/test
 // @desc    Tests profiles route
 // @access  Public
@@ -27,6 +30,7 @@ router.get(
   (request, response) => {
     const errors = {};
     Profile.findOne({ user: request.user.id })
+      .populate('user', ['name', 'avatar'])
       .then(profile => {
         if (!profile) {
           errors.noprofile = 'There is no profile for this user.';
@@ -43,16 +47,23 @@ router.get(
 // @route   POST api/profile/
 // @desc    create/update the user's profile
 // @access  Private
-router.get(
+router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
   (request, response) => {
-    //get the fields from fe
+    const { errors, isValid } = validateProfileInput(request.body);
 
+    // Check Validation
+    if (!isValid) {
+      // Return any errors with 400 status
+      console.log('damn');
+      return response.status(400).json(errors);
+    }
+
+    //get the fields from fe
     const profileDetails = {};
     //attached to the logged-in user:
     profileDetails.user = request.user.id;
-
     //from model
     if (request.body.handle) profileDetails.handle = request.body.handle;
     if (request.body.location) profileDetails.location = request.body.location;
@@ -61,12 +72,11 @@ router.get(
     if (typeof request.body.groups !== 'undefined') {
       profileDetails.groups = request.body.groups.split(',');
     }
+
     //social is an object in model. comes in from FE as a string.
     //set to obj but init obj first:
     //initialise profileDetails.social={}
-
     profileDetails.social = {};
-
     if (request.body.youtube)
       profileDetails.social.youtube = request.body.youtube;
     if (request.body.linkedin)

@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 
 const users = require('./routes/api/users');
-const profiles = require('./routes/api/profiles');
+const profile = require('./routes/api/profile');
 const posts = require('./routes/api/posts');
 
 const app = express();
@@ -29,9 +29,10 @@ require('./config/passport')(passport);
 //auth
 app.use('/api/users', users);
 //vols, members, adopters
-app.use('/api/profile', profiles);
+app.use('/api/profile', profile);
 //communications
 app.use('/api/posts', posts);
+
 const PORT = process.env.PORT || 7000;
 
 app.listen(PORT, () => console.log(`OuttaSight listening on port ${PORT}`));

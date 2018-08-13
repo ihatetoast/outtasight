@@ -3,6 +3,7 @@ const isEmpty = require('./helpers');
 
 //the data passed in will be request.body at users.js in api routes.
 module.exports = function validateLoginInput(data) {
+  //init errors obj to collect errors:
   let errors = {};
   //ensure that the data.?? is a string if it is empty.
   data.email = !isEmpty(data.email) ? data.email : '';

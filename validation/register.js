@@ -2,6 +2,7 @@ const Validator = require('validator');
 const isEmpty = require('./helpers');
 
 module.exports = function validateRegisterInput(data) {
+  //init errors obj to collect errors:
   let errors = {};
   //NOTE: VALIDATOR VALIDATES STRINGS.
   //ensure that the data.?? is a string if it is empty.
