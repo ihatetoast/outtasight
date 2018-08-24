@@ -25,19 +25,22 @@ const ProfileSchema = new Schema({
     type: [
       {
         name: {
-          type: String
+          type: String,
+          required: true
         },
         species: {
-          type: String
+          type: String,
+          required: true
         },
         breed: {
-          type: String
+          type: String,
+          required: true
         },
         photo: {
           type: String // links only.
         },
         description: {
-          type: String
+          type: String // limit this!
         }
       }
     ]
@@ -47,7 +50,8 @@ const ProfileSchema = new Schema({
     linkedin: { type: String },
     twitter: { type: String },
     instagram: { type: String },
-    facebook: { type: String }
+    facebook: { type: String },
+    website: { type: String }
   },
   date: {
     type: Date,

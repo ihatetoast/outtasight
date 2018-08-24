@@ -15,6 +15,13 @@ const validateRegisterInput = require('../../validation/register');
 const validateLoginInput = require('../../validation/login');
 
 const User = require('../../models/User');
+
+//////////////////////////////////////////////
+//////////////////////////////////////////////
+//       GET GET  GET  GET  GET             //
+//       GET GETCHER ROUTES HERE!           //
+//////////////////////////////////////////////
+//////////////////////////////////////////////
 // @route   GET api/users/test
 // @desc    Tests users route
 // @access  Public
@@ -24,7 +31,7 @@ router.get('/test', (request, response) => {
   });
 });
 
-// @route   GET api/users/register
+// @route   POST api/users/register
 // @desc    registers users
 // @access  Public
 
@@ -64,7 +71,7 @@ router.post('/register', (request, response) => {
   });
 });
 
-// @route   GET api/users/login
+// @route   POST api/users/login
 // @desc    users log in. if user exists, jwt gets returned
 // @access  Public
 router.post('/login', (request, response) => {
