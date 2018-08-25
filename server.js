@@ -5,7 +5,7 @@ const passport = require('passport');
 
 const users = require('./routes/api/users');
 const profile = require('./routes/api/profile');
-const posts = require('./routes/api/posts');
+const notes = require('./routes/api/notes');
 
 const app = express();
 //body parser for wreck dot bodday
@@ -31,7 +31,7 @@ app.use('/api/users', users);
 //vols, members, adopters
 app.use('/api/profile', profile);
 //communications
-app.use('/api/posts', posts);
+app.use('/api/notes', notes);
 
 const PORT = process.env.PORT || 7000;
 
