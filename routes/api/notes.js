@@ -252,4 +252,44 @@ router.delete(
       );
   }
 );
+
+// @route   DELETE api/posts/comment/:note_id/:comment_id
+// @desc    removes a comment from a note.
+// @access  Private // because we need the user
+
+router.delete(
+  '/comment/:note_id/:comment_id',
+  passport.authenticate('jwt', { session: false }),
+  (request, response) => {
+    Note.findById(request.params.note_id)
+      .then(note => {
+        //check if comment exists. filter over comments arr
+        // make the comment id a string. iff equals passed in comment id from params, it's held in new arr from filter
+        //if that new arr === 0, the comment is not there. 404 (not found)
+        if (
+          note.comments.filter(
+            cmt => cmt._id.toString() === request.params.comment_id
+          ).length === 0
+        ) {
+          //if true, comment doesn't exist.
+          return response
+            .status(404)
+            .json({ commentdoesnotexist: 'Comment does not exist' });
+        }
+        // 1 hold idx to remove as variable:
+        // 2 like likes: map over each, and put its id to string,
+        // then get index of the param id.
+        // 3 splice out of arr from idx var and take just one away.
+        const removeIdx = note.comments
+          .map(item => item._id.toString())
+          .indexOf(request.params.comment_id);
+        note.comments.splice(removeIdx, 1);
+        // save to db
+        note.save().then(note => response.json(note));
+      })
+      .catch(err =>
+        response.status(404).json({ notenotfound: 'No note found.' })
+      );
+  }
+);
 module.exports = router;
