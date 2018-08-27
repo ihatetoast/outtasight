@@ -8,8 +8,9 @@ const passport = require('passport');
 const validateNoteInput = require('../../validation/note');
 
 //bring in models:
-const Note = require('../../models/Note');
 const Profile = require('../../models/Profile');
+const Note = require('../../models/Note');
+
 //////////////////////////////////////////////
 //////////////////////////////////////////////
 //       GET GET  GET  GET  GET             //
@@ -81,7 +82,7 @@ router.post(
       text: request.body.text,
       name: request.body.name,
       avatar: request.body.avatar,
-      user: request.body.user
+      user: request.user.id
     });
     //save the new note, respond with json
     newNote.save().then(note => response.json(note));
@@ -98,23 +99,31 @@ router.post(
 // @route   DELETE api/notes/:id
 // @desc    del a note
 // @access  Private
+
 router.delete(
   '/:id',
   passport.authenticate('jwt', { session: false }),
   (request, response) => {
-    Profile.findOne({ user: request.user.id }).then(profile => {
-      Note.findById({ _id: request.params.id })
-        .then(note => {
+    //get teh user
+    Profile.findOne({ user: request.user.id })
+      .then(() => {
+        //get the post by id
+        Note.findById({ _id: request.params.id }).then(note => {
+          //make sure the owner is the one we want
           if (note.user.toString() !== request.user.id) {
-            return response.status(401).json({ notauth: 'User is not auth' });
+            return response
+              .status(401)
+              .json({ notauthorized: 'Unauthorized user.' });
           }
+          //if all good, delete!
           note.remove().then(() => response.json({ success: true }));
-        })
-        .catch(err =>
-          response.status(404).json({ notenotfound: 'Note not found' })
-        );
-    });
+        });
+      })
+      .catch(err =>
+        response
+          .status(404)
+          .json({ nonote: 'Cannot delete. No post with given id found.' })
+      );
   }
 );
-
 module.exports = router;
