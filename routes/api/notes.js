@@ -9,6 +9,7 @@ const validateNoteInput = require('../../validation/note');
 
 //bring in models:
 const Note = require('../../models/Note');
+const Profile = require('../../models/Profile');
 //////////////////////////////////////////////
 //////////////////////////////////////////////
 //       GET GET  GET  GET  GET             //
@@ -23,6 +24,33 @@ router.get('/test', (request, response) => {
     msg: 'Posts works.'
   });
 });
+// @route   GET api/notes/
+// @desc    get all posts?
+// @access  Private
+router.get(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  (request, response) => {
+    Note.find()
+      .sort({ date: -1 })
+      .then(notes => response.json(notes))
+      .catch(err => response.status(404).json({ nonotes: 'No notes found.' }));
+  }
+);
+// @route   GET api/notes/:id
+// @desc    get one post
+// @access  Private
+router.get(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  (request, response) => {
+    Note.findById(request.params.id)
+      .then(note => response.json(note))
+      .catch(err =>
+        response.status(404).json({ nonote: 'No note found with that ID.' })
+      );
+  }
+);
 
 //////////////////////////////////////////////
 //////////////////////////////////////////////
@@ -65,5 +93,28 @@ router.post(
 //     DELETE DELETE DELETE DELETE          //
 //     DELETE TOUTE SUITE, PETITE           //
 //////////////////////////////////////////////
-//////////////////////////////////////////////
+/////////////////////////////////////////////
+
+// @route   DELETE api/notes/:id
+// @desc    del a note
+// @access  Private
+router.delete(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  (request, response) => {
+    Profile.findOne({ user: request.user.id }).then(profile => {
+      Note.findById({ _id: request.params.id })
+        .then(note => {
+          if (note.user.toString() !== request.user.id) {
+            return response.status(401).json({ notauth: 'User is not auth' });
+          }
+          note.remove().then(() => response.json({ success: true }));
+        })
+        .catch(err =>
+          response.status(404).json({ notenotfound: 'Note not found' })
+        );
+    });
+  }
+);
+
 module.exports = router;
