@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Nav from './components/layout/Nav/Nav';
-import Landing from './components/layout/Landing/Landing';
-import Footer from './components/layout/Footer/Footer';
+import Nav from './components/layout/Nav';
+import Landing from './components/layout/Landing';
+import Footer from './components/layout/Footer';
+import Rego from './components/auth/Rego';
+import Login from './components/auth/Login';
 
 import './App.css';
-
+//landing has diff dimensions than the box for login and sign up. keep in diff div for styling.
 class App extends Component {
   render() {
     return (
@@ -13,6 +15,10 @@ class App extends Component {
         <div>
           <Nav />
           <Route exact path="/" component={Landing} />
+          <div className="auth-container">
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Rego} />
+          </div>
           <Footer />
         </div>
       </Router>
