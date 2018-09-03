@@ -20,7 +20,7 @@ class Landing extends Component {
                   </Link>
                 </div>
                 <div className="auth-button">
-                  <Link href="/login" className="btn">
+                  <Link to="/login" className="btn">
                     Login
                   </Link>
                 </div>
