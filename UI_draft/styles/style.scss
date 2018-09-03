@@ -1,0 +1,60 @@
+@import 'reset';
+
+//colors
+//variables
+//mixins
+
+//#########################//
+//    GENERAL/GLOBAL       //
+//#########################//
+a {
+  text-decoration: none;
+}
+.flex-container {
+  display: flex;
+}
+//#########################//
+//         NAV             //
+//#########################//
+//TEMP
+.navbar {
+  background: rgb(141, 140, 140);
+}
+.nav-cont {
+  justify-content: space-between;
+}
+.nav-group {
+  display: flex;
+}
+//#########################//
+//       LANDING           //
+//#########################//
+.landing {
+  position: relative;
+  background: url('../assets/gh_smiling.jpg') no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  // margin-top:0px; wait until nav is styled
+  // margin-bottom:0px; wait until footer is styled
+}
+.overlay {
+  background-color: rgba(
+    75,
+    94,
+    111,
+    0.61
+  ); //change this if i replace the image above
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+//#########################//
+//       FOOTER            //
+//#########################//
+//TEMP
+footer {
+  background-color: green;
+}
