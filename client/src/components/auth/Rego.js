@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
-
-//use axios until redux.
 import axios from 'axios';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
-export default class Rego extends Component {
+//redux
+//call registeruser action
+import { connect } from 'react-redux';
+//import action
+import { registerUser } from '../../actions/authActions';
+
+class Register extends Component {
   constructor() {
     super();
     this.state = {
@@ -31,10 +36,11 @@ export default class Rego extends Component {
       password: this.state.password,
       password2: this.state.password2
     };
-    axios
-      .post('/api/users/register', newUser)
-      .then(result => console.log(result.data))
-      .catch(err => this.setState({ errors: err.response.data }));
+    // axios
+    //   .post('/api/users/register', newUser)
+    //   .then(result => console.log(result.data))
+    //   .catch(err => this.setState({ errors: err.response.data }));
+    this.props.registerUser(newUser);
   }
   render() {
     const { errors } = this.state;
@@ -115,3 +121,15 @@ export default class Rego extends Component {
     );
   }
 }
+Register.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
+//get state into component:
+// * auth term comes from rootReducer
+// * will be able to deal with state by this.props.auth.isAuthorised or whatever
+const mapStateToProps = state => ({ auth: state.auth });
+export default connect(
+  mapStateToProps,
+  { registerUser }
+)(Register);

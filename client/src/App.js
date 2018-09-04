@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+//provides store that holds state
+import { Provider } from 'react-redux';
+import store from './store';
+//components
 import Nav from './components/layout/Nav';
 import Landing from './components/layout/Landing';
 import Footer from './components/layout/Footer';
@@ -11,17 +15,19 @@ import './App.css';
 class App extends Component {
   render() {
     return (
-      <Router>
-        <div>
-          <Nav />
-          <Route exact path="/" component={Landing} />
-          <div className="auth-container">
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/register" component={Rego} />
+      <Provider store={store}>
+        <Router>
+          <div>
+            <Nav />
+            <Route exact path="/" component={Landing} />
+            <div className="auth-container">
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Rego} />
+            </div>
+            <Footer />
           </div>
-          <Footer />
-        </div>
-      </Router>
+        </Router>
+      </Provider>
     );
   }
 }
