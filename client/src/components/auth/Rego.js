@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
-//redux
+import classnames from 'classnames';
+
+//REDUX
 //call registeruser action
 import { connect } from 'react-redux';
 //import action
@@ -36,10 +36,7 @@ class Register extends Component {
       password: this.state.password,
       password2: this.state.password2
     };
-    // axios
-    //   .post('/api/users/register', newUser)
-    //   .then(result => console.log(result.data))
-    //   .catch(err => this.setState({ errors: err.response.data }));
+
     this.props.registerUser(newUser);
   }
   render() {
@@ -121,6 +118,7 @@ class Register extends Component {
     );
   }
 }
+//actions are properties, so registerUser ...
 Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
@@ -128,7 +126,10 @@ Register.propTypes = {
 //get state into component:
 // * auth term comes from rootReducer
 // * will be able to deal with state by this.props.auth.isAuthorised or whatever
-const mapStateToProps = state => ({ auth: state.auth });
+// puts auth state inside a property called auth. and we access it with this.props.auth
+const mapStateToProps = state => ({ auth: state.auth, errors: state.errors });
+
+// export default connect(,{objectwherewemapouractions})(thisComponent)
 export default connect(
   mapStateToProps,
   { registerUser }

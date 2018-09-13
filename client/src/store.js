@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux';
+//compose is for the redux dev tools
 import thunk from 'redux-thunk';
 //bring in root reducer
 
@@ -6,6 +7,7 @@ import rootReducer from './reducers';
 const middleware = [thunk];
 const initialState = {};
 //compose and window. ... is for dev tools
+//empty store: const store = createStore(()=>[rootReducer],{initialState}, applyMiddleware())
 const store = createStore(
   rootReducer,
   initialState,
