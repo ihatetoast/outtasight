@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
-import classnames from 'classnames';
+// import classnames from 'classnames';//for conditional classes
+//UI notes:
+/* a div needs to show up when there are errors. div is ready but the style is not. class names from bootstrap. keep. but do your own.*/
 
 //REDUX
 //call registeruser action
@@ -22,6 +25,13 @@ class Register extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+  //when comp gets new props from redux state (from mapstate to props)
+  componentWillReceiveProps(nextProps) {
+    //test for ... errors!
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.error });
+    }
+  }
   //handle change evt in input fields:
   handleChange(e) {
     this.setState({
@@ -37,10 +47,9 @@ class Register extends Component {
       password2: this.state.password2
     };
 
-    this.props.registerUser(newUser);
+    this.props.registerUser(newUser, this.props.history);
   }
   render() {
-    const { errors } = this.state;
     return (
       <div className="rego">
         <div className="flex-container form-cont">
@@ -53,63 +62,63 @@ class Register extends Component {
               <input
                 type="text"
                 placeholder="Name"
-                className={classnames('form-input-field', {
-                  'invalid-form-field': errors.name
-                })}
+                // className={classnames('form-input-field', {
+                //   'invalid-form-field': errors.name
+                // })}
                 name="name"
                 value={this.state.name}
                 onChange={this.handleChange}
               />
               {/*conditionally render div with error message from backend*/}
-              {errors.name && <div className="invalid-msg">{errors.name}</div>}
+              {/* {errors.name && <div className="invalid-msg">{errors.name}</div>} */}
             </div>
             <div className="form-group">
               <input
                 type="email"
                 placeholder="Email"
-                className={classnames('form-input-field', {
-                  'invalid-form-field': errors.email
-                })}
+                // className={classnames('form-input-field', {
+                //   'invalid-form-field': errors.email
+                // })}
                 name="email"
                 value={this.state.email}
                 onChange={this.handleChange}
               />
               {/*conditionally render div with error message from backend*/}
-              {errors.email && (
+              {/* {errors.email && (
                 <div className="invalid-msg">{errors.email}</div>
-              )}
+              )} */}
             </div>
             <div className="form-group">
               <input
                 type="password"
                 placeholder="Password"
-                className={classnames('form-input-field', {
-                  'invalid-form-field': errors.password
-                })}
+                // className={classnames('form-input-field', {
+                //   'invalid-form-field': errors.password
+                // })}
                 name="password"
                 value={this.state.password}
                 onChange={this.handleChange}
               />
               {/*conditionally render div with error message from backend*/}
-              {errors.password && (
+              {/* {errors.password && (
                 <div className="invalid-msg">{errors.password}</div>
-              )}
+              )} */}
             </div>
             <div className="form-group">
               <input
                 type="password"
                 placeholder="Confirm Password"
-                className={classnames('form-input-field', {
-                  'invalid-form-field': errors.password2
-                })}
+                // className={classnames('form-input-field', {
+                //   'invalid-form-field': errors.password2
+                // })}
                 name="password2"
                 value={this.state.password2}
                 onChange={this.handleChange}
               />
               {/*conditionally render div with error message from backend*/}
-              {errors.password2 && (
+              {/* {errors.password2 && (
                 <div className="invalid-msg">{errors.password2}</div>
-              )}
+              )} */}
             </div>
             <input type="submit" className="btn" />
           </form>
@@ -121,7 +130,8 @@ class Register extends Component {
 //actions are properties, so registerUser ...
 Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 };
 //get state into component:
 // * auth term comes from rootReducer
@@ -133,4 +143,4 @@ const mapStateToProps = state => ({ auth: state.auth, errors: state.errors });
 export default connect(
   mapStateToProps,
   { registerUser }
-)(Register);
+)(withRouter(Register));
